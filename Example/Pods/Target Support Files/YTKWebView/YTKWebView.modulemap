@@ -1,6 +1,0 @@
-framework module YTKWebView {
-  umbrella header "YTKWebView-umbrella.h"
-
-  export *
-  module * { export * }
-}
