@@ -1,0 +1,6 @@
+framework module Pods_YTKWebView_Example {
+  umbrella header "Pods-YTKWebView_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}
