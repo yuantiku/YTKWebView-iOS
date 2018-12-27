@@ -10,10 +10,7 @@
 #endif
 #endif
 
-#import "UIWebView+JavaScriptContext.h"
-#import "YTKJSCommand.h"
-#import "YTKJSCommandHandler.h"
-#import "YTKWebViewJSManager.h"
+#import "YTKWebView.h"
 
 FOUNDATION_EXPORT double YTKWebViewVersionNumber;
 FOUNDATION_EXPORT const unsigned char YTKWebViewVersionString[];

@@ -1,6 +1,6 @@
 # YTKWebView
 
-[![CI Status](https://img.shields.io/travis/lihc/YTKWebView.svg?style=flat)](https://travis-ci.org/lihc/YTKWebView)
+[![CI Status](https://img.shields.io/travis/lihc/YTKWebView.svg?style=flat)](https://travis-ci.org/yuantiku/YTKWebView-iOS)
 [![Version](https://img.shields.io/cocoapods/v/YTKWebView.svg?style=flat)](https://cocoapods.org/pods/YTKWebView)
 [![License](https://img.shields.io/cocoapods/l/YTKWebView.svg?style=flat)](https://cocoapods.org/pods/YTKWebView)
 [![Platform](https://img.shields.io/cocoapods/p/YTKWebView.svg?style=flat)](https://cocoapods.org/pods/YTKWebView)
