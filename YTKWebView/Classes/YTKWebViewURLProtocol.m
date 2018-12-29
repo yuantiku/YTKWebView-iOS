@@ -83,8 +83,8 @@ NSString * const YTKWebViewErrorNotImplemented = @"YTKWebViewErrorNotImplemented
 
 - (void)stopLoading {
     id<YTKWebViewCacheFileLoader> loader = [YTKWebRequestAgent sharedAgent].cacheLoader;
-    if ([loader respondsToSelector:@selector(stopLoading)]) {
-        [loader stopLoading];
+    if ([loader respondsToSelector:@selector(stopLoadingWithRequest:)]) {
+        [loader stopLoadingWithRequest:self.request];
     }
 }
 

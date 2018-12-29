@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 
 /** 取消加载 */
-- (void)stopLoading;
+- (void)stopLoadingWithRequest:(NSURLRequest *)request;
 
 /** 如果调用者单独设置过UIWebView的UserAgent，将其返回，如果设置了UserAgent但是没有返回，将会导致UIWebView发送的请求无法被拦截 */
 - (NSString *)webViewUserAgent;

@@ -49,6 +49,14 @@
     }];
 }
 
+- (void)stopLoadingWithReqest:(NSURLRequest *)request {
+    /** 取消当前request的loading */
+}
+
+- (NSString *)webViewUserAgent {
+    return nil;
+}
+
 #pragma mark - Getter
 
 - (UIWebView *)webView {

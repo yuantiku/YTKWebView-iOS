@@ -61,6 +61,30 @@ clone当前repo， 到Example目录下执行`pod install`命令，就可以运�
 
 ```objective-c
 // 拦截webView所发出的网络请求
+// 判断是否需要拦截请求，这里拦截png、jpg的图片请求
+- (BOOL)loadFileByNativeWithRequest:(NSURLRequest *)request {
+    if ([request.URL.pathExtension isEqualToString:@"png"] || [request.URL.pathExtension isEqualToString:@"jpg"]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+// 使用SDWebImage返回图片数据
+- (void)loadFileWithRequest:(NSURLRequest *)request completion:(void (^)(NSData *data, NSError *error))completion {
+    [[SDWebImageManager sharedManager] loadImageWithURL:request.URL options:SDWebImageHighPriority progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
+        completion(data, error);
+    }];
+}
+
+// 取消当前request的loading
+- (void)stopLoadingWithReqest:(NSURLRequest *)request {
+}
+
+// 如果使用方设置了特殊的UserAgent，将其返回
+- (NSString *)webViewUserAgent {
+    return nil;
+}
 ```
 
 ## 作者
