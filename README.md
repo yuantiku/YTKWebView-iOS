@@ -14,7 +14,7 @@ YTKWebView是对UIWebView更高层级的封装一个工具类，给UIWebView封�
  * 支持生命周期概念。
  * 支持自动或者手动管理生命周期。
  * 支持生命周期变化通知，包括Protocol、Notification的通知方式。
- * 支持拦截WebView内部发出的所有Get请求。
+ * 支持拦截WebView内部发出的所有Get请求，并支持设置特殊的UIWebView UserAgent拦截。
 
 ## 哪些项目适合使用 YTKWebView
 
@@ -28,7 +28,7 @@ YTKWebView 的节本思想是给UIWebView封装上一个生命周期的概念以
 
 生命周期状态发生变化会通过代理或notification的方式通知使用方，使用方可以根据状态变化做一些事情，例如：loading状态的时候显示native loading 的UI，这样webView没有渲染完毕之前，用户不会看到一个空白页面之类的；close状态的时候清理webView资源等。
 
-由于网页需要显示的资源都是通过Get请求来完成加载的，因此如果大部分的资源加载Get请求都会命中本地缓存直接返回，将会极大的提升WebView的加载速度，如果没有命中缓存就实际发送网络请求，因此在YTKWebView工具类中拦截了所有的Get请求，但是是否真的拦截Get请求，交由使用方来决定，例如：可以让UIWebView与native共享相同的图片缓存，类似使用SDWebImage来实现图片的加载，首先会询问是否命中缓存，如果使用方通过SDWebImage查询命中缓存，则将图片本地缓存文件地址返回给YTKWebView，那么YTKWebView将会拦截该请求，将缓存文件数据返回给该请求，这样相同的图片就不会在WebView与native之间多次加载。
+由于网页需要显示的资源都是通过Get请求来完成加载的，因此如果大部分的资源加载Get请求都会命中本地缓存直接返回，将会极大的提升WebView的加载速度，如果没有命中缓存就实际发送网络请求，因此在YTKWebView工具类中拦截了所有UIWebView发送的Get请求，但是是否真的拦截Get请求，交由使用方来决定，例如：可以让UIWebView与native共享相同的图片缓存，类似使用SDWebImage来实现图片的加载，首先会询问是否需要拦截请求，如果使用方判断是图片请求，则需要拦截，那么YTKWebView将会拦截该请求，并在请求开始的时候向使用方索要图片数据，使用方将缓存图片数据返回给YTKWebViewURLProtocol，这样相同的图片就不会在WebView与native之间多次加载。
 
 ## 安装
 

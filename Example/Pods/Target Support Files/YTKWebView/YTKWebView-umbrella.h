@@ -10,7 +10,10 @@
 #endif
 #endif
 
+#import "YTKWebRequestAgent.h"
 #import "YTKWebView.h"
+#import "YTKWebViewManager.h"
+#import "YTKWebViewURLProtocol.h"
 
 FOUNDATION_EXPORT double YTKWebViewVersionNumber;
 FOUNDATION_EXPORT const unsigned char YTKWebViewVersionString[];

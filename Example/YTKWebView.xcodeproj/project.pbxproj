@@ -60,7 +60,7 @@
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		786E36C69B18419B11B702AE /* Pods_YTKWebView_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YTKWebView_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8595EE8621F4DFC85ECFC8B2 /* YTKWebView.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = YTKWebView.podspec; path = ../YTKWebView.podspec; sourceTree = "<group>"; };
+		8595EE8621F4DFC85ECFC8B2 /* YTKWebView.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = YTKWebView.podspec; path = ../YTKWebView.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B7035EE18D272AC6346522F9 /* Pods-YTKWebView_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YTKWebView_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-YTKWebView_Tests/Pods-YTKWebView_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		E28F9E73EC0FB11757A2A208 /* Pods-YTKWebView_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YTKWebView_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YTKWebView_Tests/Pods-YTKWebView_Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -304,10 +304,12 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-YTKWebView_Example/Pods-YTKWebView_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/YTKWebView/YTKWebView.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YTKWebView.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
