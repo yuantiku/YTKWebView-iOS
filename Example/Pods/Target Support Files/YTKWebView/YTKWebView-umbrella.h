@@ -10,6 +10,9 @@
 #endif
 #endif
 
+#import "NSObject+YTKObject.h"
+#import "UIWebView+YTKSwizzling.h"
+#import "YTKMultiWebViewManager.h"
 #import "YTKWebRequestAgent.h"
 #import "YTKWebView.h"
 #import "YTKWebViewManager.h"
