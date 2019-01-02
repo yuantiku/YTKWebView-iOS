@@ -55,15 +55,15 @@ clone当前repo， 到Example目录下执行`pod install`命令，就可以运�
 // 手动管理生命周期
 UIWebView *webView = [UIWebView new];
 webView.delegate = self;
-YTKMultiWebViewLifecycle *lifecycle = [[YTKMultiWebViewLifecycle alloc] initWithWebView:webView];
-self.lifecycle.delegate = self;
+YTKWebViewLifecycle *lifecycle = [[YTKWebViewLifecycle alloc] initWithWebView:webView];
+lifecycle.delegate = self;
 // 手动管理生命周期
-self.lifecycle.manualControlLifecycle = YES;
+lifecycle.manualControlLifecycle = YES;
 
 // 监听YTKWebView生命周期变化通知，支持protocol以及notification的方式，这里以protocol为例
 #pragma mark - YTKWebViewLifecycleDelegate
-- (void)webViewLifecycle:(YTKWebViewLifecycle *)lifecycle webView:(UIWebView *)webView lifecycleStateDidChange:(YTKWebViewLifecycleState)lifecycleState {
-    NSLog(@"lifecycle did change: %@", @(lifecycleState));
+- (void)webViewLifecycle:(YTKWebViewLifecycle *)lifecycle webView:(UIWebView *)webView lifecycleStateDidChange:(YTKWebViewLifecycleState)state {
+    NSLog(@"lifecycle did change: %@", @(state));
 }
 ```
 
