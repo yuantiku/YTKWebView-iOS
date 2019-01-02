@@ -10,11 +10,11 @@
 #import <YTKWebView/YTKWebView.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
-@interface YTKViewController () <YTKWebViewCacheFileLoader, UIWebViewDelegate, YTKMultiWebViewManagerDelegate>
+@interface YTKViewController () <YTKWebViewCacheFileLoader, UIWebViewDelegate, YTKWebViewLifecycleDelegate>
 
 @property (nonatomic, strong) UIWebView *webView;
 
-@property (nonatomic, strong) YTKMultiWebViewManager *manager;
+@property (nonatomic, strong) YTKWebViewLifecycle *lifecycle;
 
 @end
 
@@ -24,8 +24,8 @@
     [super viewDidLoad];
 
     self.webView.delegate = self;
-    self.manager = [[YTKMultiWebViewManager alloc] initWithWebViews:@[self.webView]];
-    self.manager.delegate = self;
+    self.lifecycle = [[YTKWebViewLifecycle alloc] initWithWebView:self.webView];
+    self.lifecycle.delegate = self;
     [YTKWebRequestAgent sharedAgent].cacheLoader = self;
 
     NSURL *URL = [NSURL URLWithString:@"https://www.quanjing.com/imgbuy/QJ6919057308.html"];
@@ -59,10 +59,10 @@
     return nil;
 }
 
-#pragma mark - YTKMultiWebViewManagerDelegate
+#pragma mark - YTKWebViewLifecycleDelegate
 
-- (void)manager:(YTKMultiWebViewManager *)manager webView:(UIWebView *)webView lifecycleDidChange:(YTKWebViewLifecycle)lifecycle {
-    NSLog(@"lifecycle did change: %@", @(lifecycle));
+- (void)webViewLifecycle:(YTKWebViewLifecycle *)lifecycle webView:(UIWebView *)webView lifecycleStateDidChange:(YTKWebViewLifecycleState)state {
+    NSLog(@"lifecycle state did change: %@", @(state));
 }
 
 #pragma mark - UIWebViewDelegate

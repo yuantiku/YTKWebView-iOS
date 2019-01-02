@@ -6,10 +6,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "YTKWebViewManager.h"
+#import "YTKWebViewLifecycle.h"
 #import "YTKWebViewURLProtocol.h"
 #import "YTKWebRequestAgent.h"
-#import "YTKMultiWebViewManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

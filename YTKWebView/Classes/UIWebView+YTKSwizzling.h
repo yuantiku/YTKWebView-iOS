@@ -10,7 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 FOUNDATION_EXPORT NSString * const YTKDidCallWebViewSetDelegateNotification;
-FOUNDATION_EXPORT NSString * const YTKDidCallSetDelegateManagerKey;
+FOUNDATION_EXPORT NSString * const YTKDidCallSetDelegateLifecycleKey;
 FOUNDATION_EXPORT NSString * const YTKDidCallSetDelegateDelegateKey;
 
 @interface UIWebView (YTKSwizzling)

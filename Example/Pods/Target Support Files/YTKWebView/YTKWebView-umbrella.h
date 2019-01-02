@@ -12,10 +12,9 @@
 
 #import "NSObject+YTKObject.h"
 #import "UIWebView+YTKSwizzling.h"
-#import "YTKMultiWebViewManager.h"
 #import "YTKWebRequestAgent.h"
 #import "YTKWebView.h"
-#import "YTKWebViewManager.h"
+#import "YTKWebViewLifecycle.h"
 #import "YTKWebViewURLProtocol.h"
 
 FOUNDATION_EXPORT double YTKWebViewVersionNumber;

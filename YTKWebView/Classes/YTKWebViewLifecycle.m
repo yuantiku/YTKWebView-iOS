@@ -1,31 +1,29 @@
 //
-//  YTKWebViewManager.m
+//  YTKWebViewLifecycle.m
 //  YTKWebView
 //
 //  Created by lihaichun on 2018/12/29.
 //
 
-#import "YTKWebViewManager.h"
+#import "YTKWebViewLifecycle.h"
 #import "YTKWebViewURLProtocol.h"
 #import "YTKWebRequestAgent.h"
 #import "NSObject+YTKObject.h"
 #import "UIWebView+YTKSwizzling.h"
 
-NSString * const YTKWebViewLifecycleDidChangeNotification = @"YTKWebViewLifecycleDidChangeNotification";
-NSString * const YTKWebViewLifecycleKey = @"YTKWebViewLifecycleKey";
+NSString * const YTKWebViewLifecycleStateDidChangeNotification = @"YTKWebViewLifecycleStateDidChangeNotification";
+NSString * const YTKWebViewLifecycleStateKey = @"YTKWebViewLifecycleStateKey";
 NSString * const YTKWebViewKey = @"YTKWebViewKey";
 
-@interface YTKWebViewManager () <UIWebViewDelegate>
+@interface YTKWebViewLifecycle () <UIWebViewDelegate>
 
 @property (nonatomic, weak) UIWebView *webView;
-
-@property (nonatomic, readwrite) YTKWebViewLifecycle lifecycle;
 
 @property (nonatomic, weak) id<UIWebViewDelegate> webViewDelegate;
 
 @end
 
-@implementation YTKWebViewManager
+@implementation YTKWebViewLifecycle
 
 + (void)initialize {
     [NSURLProtocol registerClass:[YTKWebViewURLProtocol class]];
@@ -41,14 +39,14 @@ NSString * const YTKWebViewKey = @"YTKWebViewKey";
             self.webViewDelegate = webView.delegate;
         }
         _webView.delegate = self;
-        _lifecycle = YTKWebViewLifecycleInit;
+        _state = YTKWebViewLifecycleStateInit;
         _webView.ytk_retainObject = self;
     }
     return self;
 }
 
 - (void)dealloc {
-    NSLog(@"YTKWebViewManager dealloc");
+    NSLog(@"YTKWebViewLifecycle dealloc");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -60,7 +58,7 @@ NSString * const YTKWebViewKey = @"YTKWebViewKey";
 - (void)callSetDelegateSelector:(NSNotification *)notification {
     NSDictionary *userInfo = notification.userInfo;
     UIWebView *webView = notification.object;
-    YTKWebViewManager *manager = [userInfo objectForKey:YTKDidCallSetDelegateManagerKey];
+    YTKWebViewLifecycle *manager = [userInfo objectForKey:YTKDidCallSetDelegateLifecycleKey];
     if (webView == self.webView && manager == self) {
         id<UIWebViewDelegate> delegate = [userInfo objectForKey:YTKDidCallSetDelegateDelegateKey];
         if (delegate) {
@@ -71,13 +69,13 @@ NSString * const YTKWebViewKey = @"YTKWebViewKey";
 
 #pragma mark - Utils
 
-- (void)notifyLifecycleChange:(YTKWebViewLifecycle)lifecycle {
-    if ([self.delegate respondsToSelector:@selector(webViewManager:webView:lifecycleDidChange:)]) {
-        [self.delegate webViewManager:self webView:self.webView lifecycleDidChange:lifecycle];
+- (void)notifyLifecycleStateChange:(YTKWebViewLifecycleState)state {
+    if ([self.delegate respondsToSelector:@selector(webViewLifecycle:webView:lifecycleStateDidChange:)]) {
+        [self.delegate webViewLifecycle:self webView:self.webView lifecycleStateDidChange:state];
     }
 
-    NSDictionary *userInfo = @{YTKWebViewLifecycleKey : @(lifecycle), YTKWebViewKey : self.webView};
-    [[NSNotificationCenter defaultCenter] postNotificationName:YTKWebViewLifecycleDidChangeNotification object:nil userInfo:userInfo];
+    NSDictionary *userInfo = @{YTKWebViewLifecycleStateKey : @(state), YTKWebViewKey : self.webView};
+    [[NSNotificationCenter defaultCenter] postNotificationName:YTKWebViewLifecycleStateDidChangeNotification object:nil userInfo:userInfo];
 }
 
 #pragma mark - UIWebViewDelegate
@@ -86,7 +84,7 @@ NSString * const YTKWebViewKey = @"YTKWebViewKey";
     if (self.manualControlLifecycle) {
         return;
     }
-    self.lifecycle = YTKWebViewLifecycleLoading;
+    self.state = YTKWebViewLifecycleStateLoading;
 
     /** 传递 */
     if ([self.webViewDelegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
@@ -98,7 +96,7 @@ NSString * const YTKWebViewKey = @"YTKWebViewKey";
     if (self.manualControlLifecycle) {
         return;
     }
-    self.lifecycle = YTKWebViewLifecycleSucceed;
+    self.state = YTKWebViewLifecycleStateSucceed;
 
     if ([self.webViewDelegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
         [self.webViewDelegate webViewDidFinishLoad:webView];
@@ -109,7 +107,7 @@ NSString * const YTKWebViewKey = @"YTKWebViewKey";
     if (self.manualControlLifecycle) {
         return;
     }
-    self.lifecycle = YTKWebViewLifecycleFailed;
+    self.state = YTKWebViewLifecycleStateFailed;
 
     if ([self.webViewDelegate respondsToSelector:@selector(webView:didFailLoadWithError:)]) {
         [self.webViewDelegate webView:webView didFailLoadWithError:error];
@@ -125,16 +123,16 @@ NSString * const YTKWebViewKey = @"YTKWebViewKey";
 
 #pragma mark - Setter
 
-- (void)setLifecycle:(YTKWebViewLifecycle)lifecycle {
-    if (lifecycle == YTKWebViewLifecycleClose) {
+- (void)setState:(YTKWebViewLifecycleState)state {
+    if (state == YTKWebViewLifecycleStateClose) {
         [self clean];
     }
-    _lifecycle = lifecycle;
+    _state = state;
     if ([[NSThread currentThread] isMainThread]) {
-        [self notifyLifecycleChange:lifecycle];
+        [self notifyLifecycleStateChange:state];
     } else {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self notifyLifecycleChange:lifecycle];
+            [self notifyLifecycleStateChange:state];
         });
     }
 }

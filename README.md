@@ -12,7 +12,7 @@ YTKWebView是对UIWebView更高层级的封装一个工具类，给UIWebView封�
 ## YTKWebView 提供了哪些功能
 
  * 支持生命周期概念。
- * 支持对于多个webView自动或者手动管理生命周期。
+ * 支持自动或者手动管理生命周期。
  * 支持生命周期变化通知，包括Protocol、Notification的通知方式。
  * 支持拦截WebView内部发出的所有Get请求，并支持设置特殊的UIWebView UserAgent拦截。
 
@@ -26,7 +26,7 @@ YTKWebView 适合ObjectC实现的项目，并且项目中使用UIWebView作为�
 
 YTKWebView 的基本思想是给UIWebView封装上一个生命周期的概念以及提供拦截Get请求的能力，可以配合客户端的缓存来使用，进而提升网页的加载渲染速度与效果。
 
-同时支持多个webView的生命周期管理，并且对于webView的UIWebViewDelegate的回调不会产生影响，生命周期状态发生变化会通过protocol或notification的方式通知使用方，使用方可以根据状态变化做一些事情，例如：loading状态的时候显示native loading 的UI，这样webView没有渲染完毕之前，用户不会看到一个空白页面之类的；close状态的时候清理webView资源等。
+对于webView的UIWebViewDelegate的回调不会产生影响，生命周期状态发生变化会通过protocol或notification的方式通知使用方，使用方可以根据状态变化做一些事情，例如：loading状态的时候显示native loading 的UI，这样webView没有渲染完毕之前，用户不会看到一个空白页面之类的；close状态的时候清理webView资源等。
 
 由于网页需要显示的资源都是通过Get请求来完成加载的，因此如果大部分的资源加载Get请求都会命中本地缓存直接返回，将会极大的提升WebView的加载速度，如果没有命中缓存就实际发送网络请求，因此在YTKWebView工具类中拦截了所有UIWebView发送的Get请求，但是是否真的拦截Get请求，交由使用方来决定，例如：可以让UIWebView与native共享相同的图片缓存，类似使用SDWebImage来实现图片的加载，首先会询问是否需要拦截请求，如果使用方判断是图片请求，则需要拦截，那么YTKWebView将会拦截该请求，并在请求开始的时候向使用方索要图片数据，使用方将缓存图片数据返回给YTKWebViewURLProtocol，这样相同的图片就不会在WebView与native之间多次加载。
 
@@ -49,22 +49,21 @@ clone当前repo， 到Example目录下执行`pod install`命令，就可以运�
 
 ## 使用方法
 
-首先，看是否需要主动管理YTKWebView的生命周期，如果不需要管理，则只需要监听生命周期变化通知即可；如果需要主动管理YTKWebView生命周期，则需要通过业务代码来管理YTKWebView的生命周期，一个典型的例子就是JS控制YTKWebView的生命周期，例如显示loading UI等，然后通知native来做一些事情，YTKMultiWebViewManager支持多个webView 的生命周期管理，如下所示：
+首先，看是否需要主动管理YTKWebView的生命周期，如果不需要管理，则只需要监听生命周期变化通知即可；如果需要主动管理YTKWebView生命周期，则需要通过业务代码来管理YTKWebView的生命周期，一个典型的例子就是JS控制YTKWebView的生命周期，例如显示loading UI等，然后通知native来做一些事情，如下所示：
 
 ```objective-c
 // 手动管理生命周期
-UIWebView *webView1 = [UIWebView new];
-UIWebView *webView2 = [UIWebView new];
-webView1.delegate = self;
-webView2.delegate = self;
-YTKMultiWebViewManager *manager = [[YTKMultiWebViewManager alloc] initWithWebViews:@[webView1, webView2]];
-self.manager.delegate = self;
+UIWebView *webView = [UIWebView new];
+webView.delegate = self;
+YTKMultiWebViewLifecycle *lifecycle = [[YTKMultiWebViewLifecycle alloc] initWithWebView:webView];
+self.lifecycle.delegate = self;
 // 手动管理生命周期
-self.manager.manualControlLifecycle = YES;
+self.lifecycle.manualControlLifecycle = YES;
 
 // 监听YTKWebView生命周期变化通知，支持protocol以及notification的方式，这里以protocol为例
-- (void)manager:(YTKMultiWebViewManager *)manager webView:(UIWebView *)webView lifecycleDidChange:(YTKWebViewLifecycle)lifecycle {
-    NSLog(@"lifecycle did change: %@", @(lifecycle));
+#pragma mark - YTKWebViewLifecycleDelegate
+- (void)webViewLifecycle:(YTKWebViewLifecycle *)lifecycle webView:(UIWebView *)webView lifecycleStateDidChange:(YTKWebViewLifecycleState)lifecycleState {
+    NSLog(@"lifecycle did change: %@", @(lifecycleState));
 }
 ```
 
