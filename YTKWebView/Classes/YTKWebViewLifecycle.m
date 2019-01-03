@@ -6,8 +6,6 @@
 //
 
 #import "YTKWebViewLifecycle.h"
-#import "YTKWebViewURLProtocol.h"
-#import "YTKWebRequestAgent.h"
 #import "NSObject+YTKObject.h"
 #import "UIWebView+YTKSwizzling.h"
 
@@ -24,11 +22,6 @@ NSString * const YTKWebViewKey = @"YTKWebViewKey";
 @end
 
 @implementation YTKWebViewLifecycle
-
-+ (void)initialize {
-    [NSURLProtocol registerClass:[YTKWebViewURLProtocol class]];
-    [YTKWebRequestAgent sharedAgent];
-}
 
 - (instancetype)initWithWebView:(UIWebView *)webView {
     self = [super init];

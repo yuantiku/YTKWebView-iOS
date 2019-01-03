@@ -7,14 +7,45 @@
 
 #import "YTKWebView.h"
 
+@interface YTKWebView ()
+
+@property (nonatomic, strong) YTKWebViewLifecycle *lifecycle;
+
+@property (nonatomic, strong) UIWebView *webView;
+
+@end
+
 @implementation YTKWebView
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+- (instancetype)initWithWebView:(UIWebView *)webView {
+    self = [super init];
+    if (self) {
+        _webView = webView;
+        _lifecycle = [[YTKWebViewLifecycle alloc] initWithWebView:webView];
+    }
+    return self;
 }
-*/
+
+#pragma mark - Properties
+
+- (YTKWebViewLifecycleState)state {
+    return self.lifecycle.state;
+}
+
+- (BOOL)manualControlLifecycle {
+    return self.lifecycle.manualControlLifecycle;
+}
+
+- (void)setManualControlLifecycle:(BOOL)manualControlLifecycle {
+    self.lifecycle.manualControlLifecycle = manualControlLifecycle;
+}
+
+- (id<YTKWebViewLifecycleDelegate>)lifecycleDelegate {
+    return self.lifecycle.delegate;
+}
+
+- (void)setLifecycleDelegate:(id<YTKWebViewLifecycleDelegate>)lifecycleDelegate {
+    self.lifecycle.delegate = lifecycleDelegate;
+}
 
 @end

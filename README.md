@@ -7,7 +7,7 @@
 
 ## YTKWebView 是什么
 
-YTKWebView是对UIWebView更高层级的封装一个工具类，给UIWebView封装了生命周期以及Get请求拦截的能力，生命周期概念包括：init初始化、loading加载中、succeed加载完毕、failed加载失败、close关闭，主要依赖UIWebViewDelegate、NSURLProtocol、runtime来实现的。
+YTKWebView是对UIWebView更高层级的封装一个工具类，给UIWebView封装了生命周期、JS注入通信以及Get请求拦截的能力，生命周期概念包括：init初始化、loading加载中、succeed加载完毕、failed加载失败、close关闭，主要依赖UIWebViewDelegate、NSURLProtocol、runtime、YTKJSBridge、YTKResourceCache来实现的。
  
 ## YTKWebView 提供了哪些功能
 
@@ -15,12 +15,14 @@ YTKWebView是对UIWebView更高层级的封装一个工具类，给UIWebView封�
  * 支持自动或者手动管理生命周期。
  * 支持生命周期变化通知，包括Protocol、Notification的通知方式。
  * 支持拦截WebView内部发出的所有Get请求，并支持设置特殊的UIWebView UserAgent拦截。
+ * 支持向webView注入JS方法。
+ * 支持调用webView提供的js方法。
 
 ## 哪些项目适合使用 YTKWebView
 
-YTKWebView 适合ObjectC实现的项目，并且项目中使用UIWebView作为网页展示的容器。
+YTKWebView 适合ObjectC实现的项目，并且项目中使用UIWebView作为网页展示的容器，并且有较多的JS通信、请求拦截的需求。
 
-如果你的项目使用了YTKWebView，将会提升WebView的加载速度以及用户使用体验。
+如果你的项目使用了YTKWebView，将会提升WebView的加载速度以及用户使用体验，节省JS通信的开发成本提高开发效率。
 
 ## YTKWebView 的基本思想
 
@@ -54,11 +56,8 @@ clone当前repo， 到Example目录下执行`pod install`命令，就可以运�
 ```objective-c
 // 手动管理生命周期
 UIWebView *webView = [UIWebView new];
-webView.delegate = self;
 YTKWebViewLifecycle *lifecycle = [[YTKWebViewLifecycle alloc] initWithWebView:webView];
 lifecycle.delegate = self;
-// 手动管理生命周期
-lifecycle.manualControlLifecycle = YES;
 
 // 监听YTKWebView生命周期变化通知，支持protocol以及notification的方式，这里以protocol为例
 #pragma mark - YTKWebViewLifecycleDelegate
@@ -70,7 +69,10 @@ lifecycle.manualControlLifecycle = YES;
 其次，根据需求看是否需要拦截YTKWebView展示内容所需要发出的Get网络请求，如果不需要拦截，则无需额外代码；如果需要拦截请求，则需要实现具体缓存命中的逻辑，如下所示：
 
 ```objective-c
-// 拦截webView所发出的网络请求
+// 拦截webView所发出的网络请求，设置YTKWebRequestAgent的cacheLoader代理
+UIWebView *webView = [UIWebView new];
+[YTKWebRequestAgent sharedAgent].cacheLoader = self;
+
 // 判断是否需要拦截请求，这里拦截png、jpg的图片请求
 - (BOOL)loadFileByNativeWithRequest:(NSURLRequest *)request {
     if ([request.URL.pathExtension isEqualToString:@"png"] || [request.URL.pathExtension isEqualToString:@"jpg"]) {
@@ -85,15 +87,6 @@ lifecycle.manualControlLifecycle = YES;
     [[SDWebImageManager sharedManager] loadImageWithURL:request.URL options:SDWebImageHighPriority progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
         completion(data, error);
     }];
-}
-
-// 取消当前request的loading
-- (void)stopLoadingWithReqest:(NSURLRequest *)request {
-}
-
-// 如果使用方设置了特殊的UserAgent，将其返回
-- (NSString *)webViewUserAgent {
-    return nil;
 }
 ```
 
