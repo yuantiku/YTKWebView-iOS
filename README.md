@@ -68,7 +68,29 @@ ytkWebView.lifecycleDelegate = self;
 }
 ```
 
-JS互调使用方法，看是否需要使用JS注入方法以及调用JS方法的能力，下面以向JS注入sayHello方法为例，如下所示：
+JS互调使用方法，native向JS注入方法，需要创建一个实现了YTKJsCommandHandler协议的类，YTKJsBridge提供了一个handler的基类YTKBaseCommandHandler，可以通过继承来实现，下面就是向JS注入弹出alert的方法的类实现，注意：协议方法@selector(handleJsCommand:inWebView:)是在异步线程执行的，如下所示：
+
+```objective-c
+@interface YTKAlertHandler : YTKBaseCommandHandler
+
+@end
+
+@implementation YTKAlertHandler
+
+- (void)handleJsCommand:(YTKJsCommand *)command inWebView:(UIWebView *)webView {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle: @"Hello, World!"
+                                                     message: nil
+                                                    delegate: nil
+                                           cancelButtonTitle: @"OK"
+                                           otherButtonTitles: nil];
+        [av show];
+    });
+}
+
+@end
+```
+向JS注入sayHello方法，如下所示：
 
 ```objective-c
 UIWebView *webView = [UIWebView new];
