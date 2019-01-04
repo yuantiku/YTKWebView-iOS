@@ -32,6 +32,8 @@ YTKWebView 的基本思想是给UIWebView封装上一个生命周期的概念以
 
 由于网页需要显示的资源都是通过Get请求来完成加载的，因此如果大部分的资源加载Get请求都会命中本地缓存直接返回，将会极大的提升WebView的加载速度，如果没有命中缓存就实际发送网络请求，因此在YTKWebView工具类中拦截了所有UIWebView发送的Get请求，但是是否真的拦截Get请求，交由使用方来决定，例如：可以让UIWebView与native共享相同的图片缓存，类似使用SDWebImage来实现图片的加载，首先会询问是否需要拦截请求，如果使用方判断是图片请求，则需要拦截，那么YTKWebView将会拦截该请求，并在请求开始的时候向使用方索要图片数据，使用方将缓存图片数据返回给YTKWebViewURLProtocol，这样相同的图片就不会在WebView与native之间多次加载。
 
+通过JSContext注入的方式实现JS同步调用native的方法，从而实现JS与native之间互相同步调用。
+
 ## 安装
 
 你可以在Podfile中加入下面一行代码来使用YTKWebView
@@ -51,13 +53,13 @@ clone当前repo， 到Example目录下执行`pod install`命令，就可以运�
 
 ## 使用方法
 
-首先，看是否需要主动管理YTKWebView的生命周期，如果不需要管理，则只需要监听生命周期变化通知即可；如果需要主动管理YTKWebView生命周期，则需要通过业务代码来管理YTKWebView的生命周期，一个典型的例子就是JS控制YTKWebView的生命周期，例如显示loading UI等，然后通知native来做一些事情，如下所示：
+生命周期使用方法，看是否需要主动管理YTKWebView的生命周期，如果不需要管理，则只需要监听生命周期变化通知即可；如果需要主动管理YTKWebView生命周期，则需要通过业务代码来管理YTKWebView的生命周期，一个典型的例子就是JS控制YTKWebView的生命周期，例如显示loading UI等，然后通知native来做一些事情，如下所示：
 
 ```objective-c
 // 手动管理生命周期
 UIWebView *webView = [UIWebView new];
-YTKWebViewLifecycle *lifecycle = [[YTKWebViewLifecycle alloc] initWithWebView:webView];
-lifecycle.delegate = self;
+YTKWebView *ytkWebView = [[YTKWebView alloc] initWithWebView:webView];
+ytkWebView.lifecycleDelegate = self;
 
 // 监听YTKWebView生命周期变化通知，支持protocol以及notification的方式，这里以protocol为例
 #pragma mark - YTKWebViewLifecycleDelegate
@@ -66,28 +68,40 @@ lifecycle.delegate = self;
 }
 ```
 
-其次，根据需求看是否需要拦截YTKWebView展示内容所需要发出的Get网络请求，如果不需要拦截，则无需额外代码；如果需要拦截请求，则需要实现具体缓存命中的逻辑，如下所示：
+JS互调使用方法，看是否需要使用JS注入方法以及调用JS方法的能力，下面以向JS注入sayHello方法为例，如下所示：
 
 ```objective-c
-// 拦截webView所发出的网络请求，设置YTKWebRequestAgent的cacheLoader代理
 UIWebView *webView = [UIWebView new];
-[YTKWebRequestAgent sharedAgent].cacheLoader = self;
+YTKWebView *ytkWebView = [[YTKWebView alloc] initWithWebView:webView];
+[ytkWebView addJsCommandHandler:[YTKAlertHandler new] forCommandName:@"sayHello"];
+```
 
-// 判断是否需要拦截请求，这里拦截png、jpg的图片请求
-- (BOOL)loadFileByNativeWithRequest:(NSURLRequest *)request {
-    if ([request.URL.pathExtension isEqualToString:@"png"] || [request.URL.pathExtension isEqualToString:@"jpg"]) {
-        return YES;
-    } else {
-        return NO;
-    }
-}
+JS调用native注入的方法，下面就是JS调用native来执行sayHello方法的代码，由于客户端注入的sayHello方法不需要参数，因此传递数据data中的arguments是空的，如下所示：
 
-// 使用SDWebImage返回图片数据
-- (void)loadFileWithRequest:(NSURLRequest *)request completion:(void (^)(NSData *data, NSError *error))completion {
-    [[SDWebImageManager sharedManager] loadImageWithURL:request.URL options:SDWebImageHighPriority progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
-        completion(data, error);
-    }];
-}
+```JavaScript
+// 准备要传给客户端的数据，包括指令，数据，回调等
+var data = {
+    name:'sayHello',
+    arguments:null,
+    callback:'',
+};
+// 直接使用native注入的全局YTKJsBridge方法调用sayHello方法执行
+YTKJsBridge(data);
+```
+native调用JS方法，下面就是native调用JS执行名为alert的JS方法，带有三个参数message，cancelTitle，confirmTitle，分别代表alert提示的文案、取消按钮文案、确认按钮文案，如下所示：
+
+```objective-c
+UIWebView *webView = [UIWebView new];
+// webView加载代码省略...
+YTKWebView *ytkWebView = [[YTKWebView alloc] initWithWebView:webView];
+// 准备传入JS的数据，包括指令，数据等
+NSDictionary *parameter = @{@"message" : @"hello, world",
+                        @"cancelTitle" : @"cancel",
+                       @"confirmTitle" : @"confirm"};
+// 客户端调用网页的alert方法，弹出alert弹窗
+[ytkWebView callJsCommandName:@"alert"
+                     argument:@[parameter]
+                 errorMessage:nil];
 ```
 
 ## 作者
