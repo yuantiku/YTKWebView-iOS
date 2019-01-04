@@ -8,14 +8,13 @@
 
 #import "YTKViewController.h"
 #import <YTKWebView/YTKWebView.h>
-#import <SDWebImage/UIImageView+WebCache.h>
+#import "YTKAlertHandler.h"
 
 @interface YTKViewController () <UIWebViewDelegate, YTKWebViewLifecycleDelegate>
 
 @property (nonatomic, strong) UIWebView *webView;
 
-@property (nonatomic, strong) YTKWebViewLifecycle *lifecycle;
-
+@property (nonatomic, strong) YTKWebView *ytkWebView;
 @end
 
 @implementation YTKViewController
@@ -24,14 +23,21 @@
     [super viewDidLoad];
 
     self.webView.delegate = self;
-    self.lifecycle = [[YTKWebViewLifecycle alloc] initWithWebView:self.webView];
-    self.lifecycle.delegate = self;
+    self.ytkWebView = [[YTKWebView alloc] initWithWebView:self.webView];
+    self.ytkWebView.lifecycleDelegate = self;
+    [self.ytkWebView addJsCommandHandler:[YTKAlertHandler new] forCommandName:@"sayHello"];
 
-    NSURL *URL = [NSURL URLWithString:@"https://www.quanjing.com/imgbuy/QJ6919057308.html"];
     [self.view addSubview:self.webView];
     self.webView.frame = self.view.frame;
     self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.webView loadRequest:[NSURLRequest requestWithURL:URL]];
+
+    // test for resource cache load
+//    NSURL *URL = [NSURL URLWithString:@"https://www.quanjing.com/imgbuy/QJ6919057308.html"];
+//    [self.webView loadRequest:[NSURLRequest requestWithURL:URL]];
+    // test for js
+    NSURL *htmlURL = [[NSBundle mainBundle] URLForResource:@"testWebView"
+                                             withExtension:@"htm"];
+    [self.webView loadRequest:[NSURLRequest requestWithURL:htmlURL]];
 }
 
 #pragma mark - YTKWebViewLifecycleDelegate

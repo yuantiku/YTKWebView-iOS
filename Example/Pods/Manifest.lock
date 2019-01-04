@@ -1,25 +1,23 @@
 PODS:
-  - SDWebImage (4.4.3):
-    - SDWebImage/Core (= 4.4.3)
-  - SDWebImage/Core (4.4.3)
-  - YTKWebView (0.1.0)
+  - YTKJsBridge (0.1.0)
+  - YTKWebView (0.1.0):
+    - YTKJsBridge (~> 0.1.0)
 
 DEPENDENCIES:
-  - SDWebImage
   - YTKWebView (from `../`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - SDWebImage
+    - YTKJsBridge
 
 EXTERNAL SOURCES:
   YTKWebView:
     :path: "../"
 
 SPEC CHECKSUMS:
-  SDWebImage: c5594f1a19c48d526d321e548902b56b479cd508
-  YTKWebView: e876dd2bbe780c13dddffeca5fa96424aecee8b6
+  YTKJsBridge: c1e2be403d792fcf751d84dde9c60fa366ec7e7e
+  YTKWebView: 10c2989af7a62db72c91b2ba828f2436f593c729
 
-PODFILE CHECKSUM: e2ed28f13057885f06fc2d728bb94fa7d0ac9a2a
+PODFILE CHECKSUM: 8cd564a7b6abf00c15c75bc358d12688d3afa6e1
 
 COCOAPODS: 1.5.3

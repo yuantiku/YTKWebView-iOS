@@ -18,5 +18,10 @@
   "platforms": {
     "ios": "7.0"
   },
-  "source_files": "YTKWebView/Classes/**/*"
+  "source_files": "YTKWebView/Classes/**/*",
+  "dependencies": {
+    "YTKJsBridge": [
+      "~> 0.1.0"
+    ]
+  }
 }

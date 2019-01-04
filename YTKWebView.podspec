@@ -35,4 +35,5 @@ YTKWebView use JavascriptCore for ObjectC function js injection, use UIWebView s
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
+  s.dependency 'YTKJsBridge', '~> 0.1.0'
 end
