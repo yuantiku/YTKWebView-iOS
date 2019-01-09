@@ -24,6 +24,8 @@
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		BD7C28B5884DBBDF985A078D /* Pods_YTKWebView_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 786E36C69B18419B11B702AE /* Pods_YTKWebView_Tests.framework */; };
+		FED76BAD21E4579E00DF254E /* YTKAlertHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FED76BAB21E4579E00DF254E /* YTKAlertHandler.m */; };
+		FED76BAF21E45D6C00DF254E /* testWebView.htm in Resources */ = {isa = PBXBuildFile; fileRef = FED76BAE21E45D6B00DF254E /* testWebView.htm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,13 +62,16 @@
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		786E36C69B18419B11B702AE /* Pods_YTKWebView_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YTKWebView_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8595EE8621F4DFC85ECFC8B2 /* YTKWebView.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = YTKWebView.podspec; path = ../YTKWebView.podspec; sourceTree = "<group>"; };
+		8595EE8621F4DFC85ECFC8B2 /* YTKWebView.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = YTKWebView.podspec; path = ../YTKWebView.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B7035EE18D272AC6346522F9 /* Pods-YTKWebView_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YTKWebView_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-YTKWebView_Tests/Pods-YTKWebView_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		E28F9E73EC0FB11757A2A208 /* Pods-YTKWebView_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YTKWebView_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YTKWebView_Tests/Pods-YTKWebView_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		E58772D8839BD4435468F8F3 /* Pods-YTKWebView_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YTKWebView_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YTKWebView_Example/Pods-YTKWebView_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		F0EA3A78265590E9F8CE756C /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		FB7B91D44E9E694B828814C6 /* Pods-YTKWebView_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YTKWebView_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-YTKWebView_Example/Pods-YTKWebView_Example.release.xcconfig"; sourceTree = "<group>"; };
+		FED76BA921E4579D00DF254E /* YTKAlertHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YTKAlertHandler.h; sourceTree = "<group>"; };
+		FED76BAB21E4579E00DF254E /* YTKAlertHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YTKAlertHandler.m; sourceTree = "<group>"; };
+		FED76BAE21E45D6B00DF254E /* testWebView.htm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = testWebView.htm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +153,9 @@
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F5A5195388D20070C39A /* YTKViewController.h */,
 				6003F5A6195388D20070C39A /* YTKViewController.m */,
+				FED76BA921E4579D00DF254E /* YTKAlertHandler.h */,
+				FED76BAB21E4579E00DF254E /* YTKAlertHandler.m */,
+				FED76BAE21E45D6B00DF254E /* testWebView.htm */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -282,6 +290,7 @@
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
+				FED76BAF21E45D6C00DF254E /* testWebView.htm in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -304,10 +313,12 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-YTKWebView_Example/Pods-YTKWebView_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/YTKJsBridge/YTKJsBridge.framework",
 				"${BUILT_PRODUCTS_DIR}/YTKWebView/YTKWebView.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YTKJsBridge.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YTKWebView.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -360,6 +371,7 @@
 			files = (
 				6003F59E195388D20070C39A /* YTKAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* YTKViewController.m in Sources */,
+				FED76BAD21E4579E00DF254E /* YTKAlertHandler.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

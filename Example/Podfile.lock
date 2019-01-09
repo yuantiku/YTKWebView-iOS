@@ -1,15 +1,22 @@
 PODS:
-  - YTKWebView (0.1.0)
+  - YTKJsBridge (0.1.3)
+  - YTKWebView (0.1.1):
+    - YTKJsBridge
 
 DEPENDENCIES:
   - YTKWebView (from `../`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - YTKJsBridge
 
 EXTERNAL SOURCES:
   YTKWebView:
     :path: "../"
 
 SPEC CHECKSUMS:
-  YTKWebView: 4d430197a252f93a13b2ff1c05f9c714f5b234e6
+  YTKJsBridge: a7611e4e92e868145b02308a55f4adc7ed28fa36
+  YTKWebView: 41cbf559d12d0079acfe1c71f4846ccbde91b02b
 
 PODFILE CHECKSUM: 8cd564a7b6abf00c15c75bc358d12688d3afa6e1
 

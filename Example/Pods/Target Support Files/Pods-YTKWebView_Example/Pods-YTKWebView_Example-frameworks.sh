@@ -143,9 +143,11 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/YTKJsBridge/YTKJsBridge.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/YTKWebView/YTKWebView.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/YTKJsBridge/YTKJsBridge.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/YTKWebView/YTKWebView.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then

@@ -10,7 +10,10 @@
 #endif
 #endif
 
+#import "NSObject+YTKObject.h"
+#import "UIWebView+YTKSwizzling.h"
 #import "YTKWebView.h"
+#import "YTKWebViewLifecycle.h"
 
 FOUNDATION_EXPORT double YTKWebViewVersionNumber;
 FOUNDATION_EXPORT const unsigned char YTKWebViewVersionString[];
