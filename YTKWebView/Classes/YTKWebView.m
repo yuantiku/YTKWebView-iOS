@@ -33,18 +33,17 @@
 #pragma mark - Public Methods
 
 - (NSString *)callJsCommandName:(NSString *)commandName
-                       argument:(nullable NSArray *)argument
-                   errorMessage:(nullable NSString *)errorMessage {
-    NSString *result = [YTKJsBridge callJsCommandName:commandName argument:argument errorMessage:errorMessage inWebView:self.webView];
+                       argument:(nullable NSArray *)argument {
+    NSString *result = [self.bridge callJsCommandName:commandName argument:argument];
     return result;
 }
 
-- (void)addJsCommandHandler:(id<YTKJsCommandHandler>)handler forCommandName:(NSString *)commandName {
-    [self.bridge addJsCommandHandler:handler forCommandName:commandName];
+- (void)addJsCommandHandlers:(NSArray *)handlers namespace:(NSString *)namespace {
+    [self.bridge addJsCommandHandlers:handlers namespace:namespace];
 }
 
-- (void)removeJsCommandHandlerForCommandName:(NSString *)commandName {
-    [self.bridge removeJsCommandHandlerForCommandName:commandName];
+- (void)removeJsCommandHandlerForNamespace:(NSString *)namespace {
+    [self.bridge removeJsCommandHandlerForNamespace:namespace];
 }
 
 #pragma mark - Properties

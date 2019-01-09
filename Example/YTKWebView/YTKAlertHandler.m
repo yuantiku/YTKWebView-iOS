@@ -10,14 +10,30 @@
 
 @implementation YTKAlertHandler
 
-- (void)handleJsCommand:(YTKJsCommand *)command inWebView:(UIWebView *)webView {
+- (void)syncSayHello:(nullable NSDictionary *)msg {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle: @"Hello, World!"
+        NSString *title = [msg objectForKey:@"title"];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle: title
                                                      message: nil
                                                     delegate: nil
                                            cancelButtonTitle: @"OK"
                                            otherButtonTitles: nil];
         [av show];
+    });
+}
+
+- (void)asyncSayHello:(nullable NSDictionary *)msg completion:(void(^)(NSError *error, id value))completion {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSString *title = [msg objectForKey:@"title"];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle: title
+                                                     message: nil
+                                                    delegate: nil
+                                           cancelButtonTitle: @"OK"
+                                           otherButtonTitles: nil];
+        [av show];
+        if (completion) {
+            completion(nil, nil);
+        }
     });
 }
 

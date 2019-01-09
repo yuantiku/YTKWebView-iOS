@@ -25,7 +25,7 @@
     self.webView.delegate = self;
     self.ytkWebView = [[YTKWebView alloc] initWithWebView:self.webView];
     self.ytkWebView.lifecycleDelegate = self;
-    [self.ytkWebView addJsCommandHandler:[YTKAlertHandler new] forCommandName:@"sayHello"];
+    [self.ytkWebView addJsCommandHandlers:@[[YTKAlertHandler new]] namespace:@"yuantiku"];
 
     [self.view addSubview:self.webView];
     self.webView.frame = self.view.frame;

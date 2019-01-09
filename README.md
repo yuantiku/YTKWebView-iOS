@@ -7,32 +7,29 @@
 
 ## YTKWebView 是什么
 
-YTKWebView是对UIWebView更高层级的封装一个工具类，给UIWebView封装了生命周期、JS注入通信以及Get请求拦截的能力，生命周期概念包括：init初始化、loading加载中、succeed加载完毕、failed加载失败、close关闭，主要依赖UIWebViewDelegate、NSURLProtocol、runtime、YTKJSBridge、YTKResourceCache来实现的。
+YTKWebView是对UIWebView更高层级的封装一个工具类，给UIWebView封装了生命周期、JS注入通信的能力，生命周期概念包括：init初始化、loading加载中、succeed加载完毕、failed加载失败、close关闭，主要依赖UIWebViewDelegate、runtime、YTKJSBridge来实现的。
  
 ## YTKWebView 提供了哪些功能
 
  * 支持生命周期概念。
  * 支持自动或者手动管理生命周期。
  * 支持生命周期变化通知，包括Protocol、Notification的通知方式。
- * 支持拦截WebView内部发出的所有Get请求，并支持设置特殊的UIWebView UserAgent拦截。
  * 支持向webView注入JS方法。
  * 支持调用webView提供的js方法。
 
 ## 哪些项目适合使用 YTKWebView
 
-YTKWebView 适合ObjectC实现的项目，并且项目中使用UIWebView作为网页展示的容器，并且有较多的JS通信、请求拦截的需求。
+YTKWebView 适合ObjectC实现的项目，并且项目中使用UIWebView作为网页展示的容器，并且有较多的JS通信需求。
 
 如果你的项目使用了YTKWebView，将会提升WebView的加载速度以及用户使用体验，节省JS通信的开发成本提高开发效率。
 
 ## YTKWebView 的基本思想
 
-YTKWebView 的基本思想是给UIWebView封装上一个生命周期的概念以及提供拦截Get请求的能力，可以配合客户端的缓存来使用，进而提升网页的加载渲染速度与效果。
+YTKWebView 的基本思想是给UIWebView封装上一个生命周期的概念。
 
 对于webView的UIWebViewDelegate的回调不会产生影响，生命周期状态发生变化会通过protocol或notification的方式通知使用方，使用方可以根据状态变化做一些事情，例如：loading状态的时候显示native loading 的UI，这样webView没有渲染完毕之前，用户不会看到一个空白页面之类的；close状态的时候清理webView资源等。
 
-由于网页需要显示的资源都是通过Get请求来完成加载的，因此如果大部分的资源加载Get请求都会命中本地缓存直接返回，将会极大的提升WebView的加载速度，如果没有命中缓存就实际发送网络请求，因此在YTKWebView工具类中拦截了所有UIWebView发送的Get请求，但是是否真的拦截Get请求，交由使用方来决定，例如：可以让UIWebView与native共享相同的图片缓存，类似使用SDWebImage来实现图片的加载，首先会询问是否需要拦截请求，如果使用方判断是图片请求，则需要拦截，那么YTKWebView将会拦截该请求，并在请求开始的时候向使用方索要图片数据，使用方将缓存图片数据返回给YTKWebViewURLProtocol，这样相同的图片就不会在WebView与native之间多次加载。
-
-通过JSContext注入的方式实现JS同步调用native的方法，从而实现JS与native之间互相同步调用。
+通过JSContext注入的方式实现JS同步、异步调用native的方法，从而实现JS与native之间互相调用。
 
 ## 安装
 
@@ -68,23 +65,41 @@ ytkWebView.lifecycleDelegate = self;
 }
 ```
 
-JS互调使用方法，native向JS注入方法，需要创建一个实现了YTKJsCommandHandler协议的类，YTKJsBridge提供了一个handler的基类YTKBaseCommandHandler，可以通过继承来实现，下面就是向JS注入弹出alert的方法的类实现，注意：协议方法@selector(handleJsCommand:inWebView:)是在异步线程执行的，如下所示：
+JS与native互调使用方法，native向JS注入方法，需要创建一个注入方法实现类，下面就是向JS注入同步syncSayHello以及异步asyncSayHello的方法例子，方法功能是弹出alert，标题通过JS指定，注意：方法是在异步线程执行的，如下所示：
 
 ```objective-c
-@interface YTKAlertHandler : YTKBaseCommandHandler
+@interface YTKAlertHandler : NSObject
 
 @end
 
 @implementation YTKAlertHandler
 
-- (void)handleJsCommand:(YTKJsCommand *)command inWebView:(UIWebView *)webView {
+// 同步方法syncSayHello
+- (void)syncSayHello:(nullable NSDictionary *)msg {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle: @"Hello, World!"
+        NSString *title = [msg objectForKey:@"title"];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle: title
                                                      message: nil
                                                     delegate: nil
                                            cancelButtonTitle: @"OK"
                                            otherButtonTitles: nil];
         [av show];
+    });
+}
+
+// 异步方法asyncSayHello，带有异步方法回调completion
+- (void)asyncSayHello:(nullable NSDictionary *)msg completion:(void(^)(NSError *error, id value))completion {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSString *title = [msg objectForKey:@"title"];
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle: title
+                                                     message: nil
+                                                    delegate: nil
+                                           cancelButtonTitle: @"OK"
+                                           otherButtonTitles: nil];
+        [av show];
+        if (completion) {
+            completion(nil, nil);
+        }
     });
 }
 
@@ -95,21 +110,36 @@ JS互调使用方法，native向JS注入方法，需要创建一个实现了YTKJ
 ```objective-c
 UIWebView *webView = [UIWebView new];
 YTKWebView *ytkWebView = [[YTKWebView alloc] initWithWebView:webView];
-[ytkWebView addJsCommandHandler:[YTKAlertHandler new] forCommandName:@"sayHello"];
+// 向JS注入在命名空间yuantiku之下的sayHello方法
+[ytkWebView addJsCommandHandlers:@[[YTKAlertHandler new]] namespace:@"yuantiku"];
 ```
 
-JS调用native注入的方法，下面就是JS调用native来执行sayHello方法的代码，由于客户端注入的sayHello方法不需要参数，因此传递数据data中的arguments是空的，如下所示：
+JS调用native注入的方法，下面就是JS调用native来异步执行yuantiku命名空间下的asyncSayHello方法的代码，客户端注入的asyncSayHello方法需要title参数，如下所示：
 
 ```JavaScript
-// 准备要传给客户端的数据，包括指令，数据，回调等
+// 准备要传给客户端异步方法asyncSayHello的数据，包括指令，数据，回调等，
 var data = {
-    name:'sayHello',
-    arguments:null,
-    callback:'',
+    methodName:"yuantiku.asyncSayHello", // 带有命名空间的方法名
+    args:{title:"async: hello world"},  // 参数
+    callId:123  // callId为-1表示同步调用，否则为异步调用
 };
-// 直接使用native注入的全局YTKJsBridge方法调用sayHello方法执行
+// 直接使用这个客户端注入的全局YTKJsBridge方法调用yuantiku命名空间下的asyncSayHello方法执行
 YTKJsBridge(data);
 ```
+
+下面就是JS调用native来同步执行yuantiku命名空间下的syncSayHello方法的代码，客户端注入的syncSayHello方法需要title参数，如下所示：
+
+```JavaScript
+// 准备要传给客户端同步方法syncSayHello的数据，包括指令，数据，回调等，
+var data = {
+    methodName:"yuantiku.syncSayHello", // 带有命名空间的方法名
+    args:{title:"sync: hello world"},  // 参数
+    callId:-1  // callId为-1表示同步调用，否则为异步调用
+};
+// 直接使用这个客户端注入的全局YTKJsBridge方法调用yuantiku命名空间下的syncSayHello方法执行
+YTKJsBridge(data);
+```
+
 native调用JS方法，下面就是native调用JS执行名为alert的JS方法，带有三个参数message，cancelTitle，confirmTitle，分别代表alert提示的文案、取消按钮文案、确认按钮文案，如下所示：
 
 ```objective-c
@@ -121,9 +151,7 @@ NSDictionary *parameter = @{@"message" : @"hello, world",
                         @"cancelTitle" : @"cancel",
                        @"confirmTitle" : @"confirm"};
 // 客户端调用网页的alert方法，弹出alert弹窗
-[ytkWebView callJsCommandName:@"alert"
-                     argument:@[parameter]
-                 errorMessage:nil];
+[ytkWebView callJsCommandName:@"alert" argument:@[parameter]];
 ```
 
 ## 作者
