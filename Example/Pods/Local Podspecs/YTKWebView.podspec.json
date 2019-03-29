@@ -1,6 +1,6 @@
 {
   "name": "YTKWebView",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "summary": "YTKWebView is used for UIWebview javascript function injection and call javascript code.",
   "description": "YTKWebView use JavascriptCore for ObjectC function js injection, use UIWebView stringByEvaluatingJavaScriptFromString selector for call javascript code. The implementation code all in the YTKWebViewJSManager.",
   "homepage": "https://github.com/yuantiku/YTKWebView-iOS",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/yuantiku/YTKWebView-iOS.git",
-    "tag": "0.1.2"
+    "tag": "0.1.4"
   },
   "platforms": {
     "ios": "7.0"
@@ -21,7 +21,7 @@
   "source_files": "YTKWebView/Classes/**/*",
   "dependencies": {
     "YTKJsBridge": [
-      "0.1.3"
+      "0.1.4"
     ]
   }
 }
