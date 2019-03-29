@@ -21,7 +21,7 @@
   "source_files": "YTKWebView/Classes/**/*",
   "dependencies": {
     "YTKJsBridge": [
-      "~> 0.1.3"
+      "0.1.3"
     ]
   }
 }
