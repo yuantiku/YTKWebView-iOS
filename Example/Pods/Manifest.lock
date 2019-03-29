@@ -1,7 +1,7 @@
 PODS:
-  - YTKJsBridge (0.1.3)
-  - YTKWebView (0.1.2):
-    - YTKJsBridge (= 0.1.3)
+  - YTKJsBridge (0.1.4)
+  - YTKWebView (0.1.4):
+    - YTKJsBridge (= 0.1.4)
 
 DEPENDENCIES:
   - YTKWebView (from `../`)
@@ -15,8 +15,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  YTKJsBridge: a7611e4e92e868145b02308a55f4adc7ed28fa36
-  YTKWebView: 522a1577746f6251394fc59e1f3dcec37da838c1
+  YTKJsBridge: 4be0e70d56a456b40e1af6177ef17a49d687995c
+  YTKWebView: a40b7d6f22afdfd32c044d756cb331d532d4b279
 
 PODFILE CHECKSUM: 8cd564a7b6abf00c15c75bc358d12688d3afa6e1
 

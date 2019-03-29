@@ -25,7 +25,7 @@ NSString * const YTKDidCallSetDelegateDelegateKey = @"YTKDidCallSetDelegateDeleg
 - (void)ytk_setDelegate:(id<UIWebViewDelegate>)delegate {
     // 获得 delegate 的实际调用类
     Class class = NSClassFromString(@"YTKWebViewLifecycle");
-    if ([self.ytk_retainObject isKindOfClass:class] && NO == [delegate isKindOfClass:class]) {
+    if ([self.ytk_retainObject isKindOfClass:class] && ![delegate isKindOfClass:class]) {
         [self ytk_setDelegate:self.ytk_retainObject];
         [[NSNotificationCenter defaultCenter] postNotificationName:YTKDidCallWebViewSetDelegateNotification object:self userInfo:@{YTKDidCallSetDelegateLifecycleKey : self.ytk_retainObject, YTKDidCallSetDelegateDelegateKey : delegate}];
     } else {

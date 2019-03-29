@@ -24,8 +24,9 @@
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		BD7C28B5884DBBDF985A078D /* Pods_YTKWebView_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 786E36C69B18419B11B702AE /* Pods_YTKWebView_Tests.framework */; };
-		FED76BAD21E4579E00DF254E /* YTKAlertHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FED76BAB21E4579E00DF254E /* YTKAlertHandler.m */; };
-		FED76BAF21E45D6C00DF254E /* testWebView.htm in Resources */ = {isa = PBXBuildFile; fileRef = FED76BAE21E45D6B00DF254E /* testWebView.htm */; };
+		FE32BE372227915000F3B753 /* testWebView.htm in Resources */ = {isa = PBXBuildFile; fileRef = FE32BE362227914F00F3B753 /* testWebView.htm */; };
+		FE32BE3C2227916C00F3B753 /* YTKAlertHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE32BE392227916B00F3B753 /* YTKAlertHandler.m */; };
+		FE32BE3D2227916C00F3B753 /* YTKFibHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE32BE3A2227916B00F3B753 /* YTKFibHandler.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,9 +70,11 @@
 		E58772D8839BD4435468F8F3 /* Pods-YTKWebView_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YTKWebView_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YTKWebView_Example/Pods-YTKWebView_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		F0EA3A78265590E9F8CE756C /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		FB7B91D44E9E694B828814C6 /* Pods-YTKWebView_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YTKWebView_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-YTKWebView_Example/Pods-YTKWebView_Example.release.xcconfig"; sourceTree = "<group>"; };
-		FED76BA921E4579D00DF254E /* YTKAlertHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YTKAlertHandler.h; sourceTree = "<group>"; };
-		FED76BAB21E4579E00DF254E /* YTKAlertHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YTKAlertHandler.m; sourceTree = "<group>"; };
-		FED76BAE21E45D6B00DF254E /* testWebView.htm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = testWebView.htm; sourceTree = "<group>"; };
+		FE32BE362227914F00F3B753 /* testWebView.htm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = testWebView.htm; path = "../../../YTKJsBridge-iOS/Example/YTKJsBridge/testWebView.htm"; sourceTree = "<group>"; };
+		FE32BE382227916B00F3B753 /* YTKFibHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YTKFibHandler.h; sourceTree = "<group>"; };
+		FE32BE392227916B00F3B753 /* YTKAlertHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YTKAlertHandler.m; path = "../../../YTKJsBridge-iOS/Example/YTKJsBridge/YTKAlertHandler.m"; sourceTree = "<group>"; };
+		FE32BE3A2227916B00F3B753 /* YTKFibHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YTKFibHandler.m; sourceTree = "<group>"; };
+		FE32BE3B2227916C00F3B753 /* YTKAlertHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YTKAlertHandler.h; path = "../../../YTKJsBridge-iOS/Example/YTKJsBridge/YTKAlertHandler.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,14 +151,16 @@
 		6003F593195388D20070C39A /* Example for YTKWebView */ = {
 			isa = PBXGroup;
 			children = (
+				FE32BE3B2227916C00F3B753 /* YTKAlertHandler.h */,
+				FE32BE392227916B00F3B753 /* YTKAlertHandler.m */,
+				FE32BE382227916B00F3B753 /* YTKFibHandler.h */,
+				FE32BE3A2227916B00F3B753 /* YTKFibHandler.m */,
+				FE32BE362227914F00F3B753 /* testWebView.htm */,
 				6003F59C195388D20070C39A /* YTKAppDelegate.h */,
 				6003F59D195388D20070C39A /* YTKAppDelegate.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F5A5195388D20070C39A /* YTKViewController.h */,
 				6003F5A6195388D20070C39A /* YTKViewController.m */,
-				FED76BA921E4579D00DF254E /* YTKAlertHandler.h */,
-				FED76BAB21E4579E00DF254E /* YTKAlertHandler.m */,
-				FED76BAE21E45D6B00DF254E /* testWebView.htm */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -290,8 +295,8 @@
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
-				FED76BAF21E45D6C00DF254E /* testWebView.htm in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
+				FE32BE372227915000F3B753 /* testWebView.htm in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -369,9 +374,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE32BE3C2227916C00F3B753 /* YTKAlertHandler.m in Sources */,
 				6003F59E195388D20070C39A /* YTKAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* YTKViewController.m in Sources */,
-				FED76BAD21E4579E00DF254E /* YTKAlertHandler.m in Sources */,
+				FE32BE3D2227916C00F3B753 /* YTKFibHandler.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
